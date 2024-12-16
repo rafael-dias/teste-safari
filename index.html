@@ -3,35 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exibir Datas Formatadas</title>
-    <script>
-        function formatDate(dateString) {
-            if (!dateString) {
-                return "";
-            }
-            const date = new Date(dateString);
-            date.setHours(date.getHours() - 3);
-
-            const day = String(date.getUTCDate()).padStart(2, '0');
-            const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Janeiro é 0!
-            const year = date.getUTCFullYear();
-            const hours = String(date.getUTCHours()).padStart(2, '0');
-            const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-
-            return `${day}/${month}/${year} - ${hours}:${minutes}`;
-        }
-
-        function displayFormattedDate() {
-            const dateInput = document.getElementById('date-input').value;
-            const formattedDate = formatDate(dateInput);
-            document.getElementById('formatted-date').textContent = formattedDate;
-        }
-    </script>
+    <title>Exibir Datas Formatadas com Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </head>
 <body>
-    <h1>Exibir Datas Formatadas</h1>
-    <label for="date-input">Insira uma data e hora (YYYY-MM-DDTHH:mm): </label>
-    <input type="datetime-local" id="date-input" oninput="displayFormattedDate()">
-    <p>Data formatada: <span id="formatted-date"></span></p>
+    <div id="app">
+        <h1>Exibir Datas Formatadas</h1>
+        <label for="date-input">Insira uma data e hora (YYYY-MM-DDTHH:mm): </label>
+        <input type="datetime-local" v-model="dateInput" @input="displayFormattedDate">
+        <p>Data formatada: <span>{{ formattedDate }}</span></p>
+
+        <pre>{{Data}}</pre>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                dateInput: '',
+                formattedDate: ''
+            },
+            computed:{
+                Data(){
+                    let data = this.dateInput
+                     if (!dateString) {
+                        return "";
+                        }
+                    
+                     const date = new Date(dateString);
+                    date.setHours(date.getHours() - 3);
+
+                    const day = String(date.getUTCDate()).padStart(2, '0');
+                    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Janeiro é 0!
+                    const year = date.getUTCFullYear();
+                    const hours = String(date.getUTCHours()).padStart(2, '0');
+                    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+
+                    return {day, month, year, hours, minutes};
+                    
+            },
+            methods: {
+                formatDate(dateString) {
+                    if (!dateString) {
+                        return "";
+                    }
+                    const date = new Date(dateString);
+                    date.setHours(date.getHours() - 3);
+
+                    const day = String(date.getUTCDate()).padStart(2, '0');
+                    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Janeiro é 0!
+                    const year = date.getUTCFullYear();
+                    const hours = String(date.getUTCHours()).padStart(2, '0');
+                    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+
+                    return `${day}/${month}/${year} - ${hours}:${minutes}`;
+                },
+                displayFormattedDate() {
+                    this.formattedDate = this.formatDate(this.dateInput);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
